@@ -18,13 +18,19 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // conectar a MongoDB
-mongoose.connect('mongodb://localhost:27017/turismo', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+mongoose.connect(mongodb://localhost:27017/turismo',{
+                 useNewUrPaeser:true,
+    useUnifiedTopology:true
 })
-.then(() => console.log('Conexión a MongoDB exitosa'))
-.catch(err => console.error('Error al conectar a MongoDB:', err));
+mongoose.connect(process.env.MONGODB_URI,{
+                     useNewUrPaeser:true,
+    useUnifiedTopology:true
+})
+.then(() =>console.log('conectado a mongodb aclas'))
+.catch(err=> console.error('error de conexion:',err));
 
+.then(()=> console.log('conectado a mongodb'))
+.catch(err=> console.error(err));
 // Esquemas y modelos
 const UsuarioSchema = new mongoose.Schema({
     nombre: String,
