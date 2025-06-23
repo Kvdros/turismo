@@ -1,1 +1,184 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #242b34;
+    min-height: 100vh;
+}
 
+/* Fondo principal con imagen y capa oscura */
+.principal {
+    min-height: 100vh;
+    background-image: url('turismo1.jpg'), linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background-size: cover;
+    background-position: center;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    margin: 40px auto;
+    max-width: 1100px;
+    box-shadow: 0 8px 32px rgba(30,60,114,0.2);
+    padding-bottom: 40px;
+}
+.principal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(34, 49, 63, 0.55);
+    z-index: 0;
+}
+
+/* Menú de navegación */
+.menu {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.18);
+    font-weight: 500;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(30,60,114,0.08);
+    transition: background 0.3s, transform 0.2s;
+}
+.menu a:hover {
+    background: #e621bb;
+    color: #fff;
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* Títulos */
+h2, h3 {
+    color: #fff;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 8px rgba(30,60,114,0.15);
+    letter-spacing: 1px;
+}
+
+/* Contenedor del formulario */
+.agregar-lugar-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255,255,255,0.13);
+    padding: 2rem;
+    border-radius: 18px;
+    margin-bottom: 2rem;
+    width: 90%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 16px rgba(30,60,114,0.10);
+   
+}
+
+/* Formulario */
+.form-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255,255,255,0.18);
+    border: 1.5px solid #e621bb;
+    border-radius: 10px;
+    color: #222;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 6px rgba(30,60,114,0.06);
+}
+input[type="text"]:focus {
+    border: 2px solid #e621bb;
+    box-shadow: 0 2px 12px #e621bb33;
+}
+input[type="text"]::placeholder {
+    color: #888;
+    opacity: 1;
+}
+button[type="submit"] {
+    width: 180px;
+    padding: 12px;
+    background: linear-gradient(90deg, #e621bb 0%, #567d46 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin: 1rem auto 0 auto;
+    display: block;
+    box-shadow: 0 2px 8px rgba(30,60,114,0.10);
+    transition: background 0.3s, transform 0.2s;
+}
+button[type="submit"]:hover {
+    background: linear-gradient(90deg, #567d46 0%, #e621bb 100%);
+    transform: translateY(-2px) scale(1.04);
+}
+
+/* Tabla */
+.tabla-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255,255,255,0.13);
+    padding: 2rem;
+    border-radius: 18px;
+    width: 95%;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 2px 16px rgba(30,60,114,0.10);
+    
+}
+#tablaLugares {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+    font-size: 1rem;
+}
+#tablaLugares th,
+#tablaLugares td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+}
+#tablaLugares th {
+    background: rgba(230,33,187,0.10);
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+    padding: 8px 18px;
+    background: linear-gradient(90deg, #e621bb 0%, #dc3545 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 1px 6px rgba(30,60,114,0.08);
+}
+.btn-eliminar:hover {
+    background: linear-gradient(90deg, #dc3545 0%, #e621bb 100%);
+    transform: translateY(-2px) scale(1.05);
+}
+.valor-eliminar {
+    color: #dc3545;
+    font-weight: bold;
+    text-decoration: none;
+}
