@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleados</title>
+    <link rel="stylesheet" href="guias.css">
+</head>
+<body>
+    <!-- Menú de navegación -->
+    <div class="menu">
+       <a href="principal.html">Menú principal</a>
+        <a href="precios.html">Precios</a>
+        <a href="lugares.html">lugares</a>
+        <a href="paquetes.html">Cerrar sesión</a>
+    </div>
+
+    <h2>Vista de guias</h2>
+
+    <div class="agregar-guias-container">
+        <h3>Agregar guias</h3>
+        <form id="formguias" class="form-horizontal">
+            <input type="text" id="nombre" placeholder="Nombre" required>
+            
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+
+    <div class="tabla-container">
+        <table id="tablaGuias">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán las filas de los empleados -->
+                 
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function cargarguia() {
+            const res = await fetch('/api/guias');
+            const guias = await res.json();
+            const tbody = document.querySelector('#tablaGuias tbody');
+
+            tbody.innerHTML = guias.map(e => `
+                <tr>
+                    <td>${e.nombre}</td>
+                    <td>
+                        <button class="btn-eliminar" onclick="eliminarGuia('${e._id}')">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function eliminarGuia(id) {
+            if (!confirm('¿Estás seguro de eliminar este guia?')) return;
+            await fetch(`/api/guias/${id}`, { method: 'DELETE' });
+            cargarguia();
+        }
+
+        document.getElementById('formguias').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+
+            if (!nombre ) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+
+            await fetch('/api/guias', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre })
+            });
+
+            document.getElementById('formguias').reset();
+            cargarguia();
+        });
+
+        window.eliminarGuia = eliminarGuia;
+        cargarguia();
+    </script>
+</body>
+</html>

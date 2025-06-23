@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precios</title>
+    <link rel="stylesheet" href="guias.css">
+</head>
+<body>
+    <!-- Menú de navegación -->
+    <div class="menu">
+        <a href="principal.html">Menú principal</a>
+        <a href="gias.html">Precios</a>
+        <a href="lugares.html">Lugares</a>
+        <a href="paquetes.html">Cerrar sesión</a>
+    </div>
+
+    <h2>Vista de Precios</h2>
+
+    <div class="agregar-precio-container">
+        <h3>Agregar precio</h3>
+        <form id="formPrecios" class="form-horizontal">
+            <input type="text" id="paquete" placeholder="Nombre del paquete" required>
+            <input type="number" id="valor" placeholder="Valor" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+
+    <div class="tabla-container">
+        <table id="tablaPrecios">
+            <thead>
+                <tr>
+                    <th>Paquete</th>
+                    <th>Valor</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán las filas de los precios -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function cargarPrecios() {
+            const res = await fetch('/api/precios');
+            const precios = await res.json();
+            const tbody = document.querySelector('#tablaPrecios tbody');
+
+            tbody.innerHTML = precios.map(p => `
+                <tr>
+                    <td>${p.paquete}</td>
+                    <td>${p.valor}</td>
+                    <td>
+                        <button class="btn-eliminar" onclick="eliminarPrecio('${p._id}')">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function eliminarPrecio(id) {
+            if (!confirm('¿Estás seguro de eliminar este precio?')) return;
+            await fetch(`/api/precios/${id}`, { method: 'DELETE' });
+            cargarPrecios();
+        }
+
+        document.getElementById('formPrecios').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const paquete = document.getElementById('paquete').value.trim();
+            const valor = document.getElementById('valor').value.trim();
+
+            if (!paquete || !valor) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+
+            await fetch('/api/precios', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paquete, valor })
+            });
+
+            document.getElementById('formPrecios').reset();
+            cargarPrecios();
+        });
+
+        window.eliminarPrecio = eliminarPrecio;
+        cargarPrecios();
+    </script>
+</body>
+</html>

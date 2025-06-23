@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleados</title>
+    <link rel="stylesheet" href="lugares.css">
+</head>
+<body>
+    <!-- Menú de navegación -->
+    <div class="menu">
+        <a href="principal.html">Menú principal</a>
+        <a href="precios.html">Pasteles</a>
+        <a href="guias.html">Pedidos</a>
+        <a href="paquetes.html">Cerrar sesión</a>
+    </div>
+
+    <h2>Vista de Lugares</h2>
+
+    <div class="agregar-lugar-container">
+        <h3>Agregar Lugares</h3>
+        <form id="formLugar" class="form-horizontal">
+            <input type="text" id="nombre" placeholder="Nombre" required>
+            <input type="text" id="descripcion" placeholder="Descripcion" required>
+            <button type="submit">Agregar</button>
+        </form>
+    </div>
+
+    <div class="tabla-container">
+        <table id="tablaLugares">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>descripcion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán las filas de los empleados -->
+                 
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function cargarLugares() {
+            const res = await fetch('/api/lugares');
+            const lugares = await res.json();
+            const tbody = document.querySelector('#tablaLugares tbody');
+
+            tbody.innerHTML = lugares.map(e => `
+                <tr>
+                    <td>${e.nombre}</td>
+                    <td>${e.descripcion}</td>
+                    <td>
+                        <button class="btn-eliminar" onclick="eliminarLugares('${e._id}')">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function eliminarLugares(id) {
+            if (!confirm('¿Estás seguro de eliminar este el lugar?')) return;
+            await fetch(`/api/lugares/${id}`, { method: 'DELETE' });
+            cargarLugares();
+        }
+
+        document.getElementById('formLugar').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+            const descripcion = document.getElementById('descripcion').value.trim();
+
+            if (!nombre || !descripcion) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+
+            await fetch('/api/lugares', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, descripcion })
+            });
+
+            document.getElementById('formLugar').reset();
+            cargarLugares();
+        });
+
+        window.eliminarLugares = eliminarLugares;
+        cargarLugares();
+    </script>
+</body>
+</html>
