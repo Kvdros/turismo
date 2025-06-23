@@ -7,30 +7,21 @@ const bcrypt = require('bcrypt');
 
 // crear una instancia de la aplicación web
 const app = express();
+// CAMBIO IMPORTANTE PARA RAILWAY: USA process.env.PORT
 const PORT = process.env.PORT || 3000; // USA EL PUERTO QUE ASIGNE RAILWAY O LOCAL 3000
 
+// MIDDLEWARE
+app.use(cors()); // HABILITA CORS
+app.use(bodyParser.json()); // PERMITE PARSEAR JSON
+app.use(express.static('public')); // SIRVE ARCHIVOS ESTÁTICOS DESDE "public"
 
-// habilitar cors y body parser
-app.use(cors());
-app.use(bodyParser.json());
-
-// servir archivos estáticos si es necesario
-app.use(express.static('public'));
-
-// conectar a MongoDB
-mongoose.connect(mongodb://localhost:27017/turismo',{
-                 useNewUrPaeser:true,
-    useUnifiedTopology:true
+// CONEXIÓN A MONGODB ATLAS USANDO VARIABLE DE ENTORNO
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
-mongoose.connect(process.env.MONGODB_URI,{
-                     useNewUrPaeser:true,
-    useUnifiedTopology:true
-})
-.then(() =>console.log('conectado a mongodb aclas'))
-.catch(err=> console.error('error de conexion:',err));
-
-.then(()=> console.log('conectado a mongodb'))
-.catch(err=> console.error(err));
+.then(() => console.log('CONECTADO A MONGODB ATLAS'))
+.catch(err => console.error('ERROR DE CONEXIÓN:', err));
 // Esquemas y modelos
 const UsuarioSchema = new mongoose.Schema({
     nombre: String,
