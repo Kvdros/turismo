@@ -7,7 +7,8 @@ const bcrypt = require('bcrypt');
 
 // crear una instancia de la aplicación web
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // USA EL PUERTO QUE ASIGNE RAILWAY O LOCAL 3000
+
 
 // habilitar cors y body parser
 app.use(cors());
