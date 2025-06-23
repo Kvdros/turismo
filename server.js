@@ -65,7 +65,6 @@ app.post('/registro', async (req, res) => {
         res.status(201).send('Usuario registrado');
     } catch (err) {
         res.status(500).send('Error al registrar usuario');
-    }
 });
 
 app.post('/login', async (req, res) => {
